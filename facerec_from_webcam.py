@@ -14,22 +14,17 @@ import numpy as np
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-# Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("zak.jpg")
-obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
-# Load a second sample picture and learn how to recognize it.
-biden_image = face_recognition.load_image_file("Vijay.jpg")
-biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+# Load a sample picture and learn how to recognize it.
+first_image = face_recognition.load_image_file("result.jpg")
+first_face_encoding = face_recognition.face_encodings(first_image)[0]
 
 # Create arrays of known face encodings and their names
 known_face_encodings = [
-    obama_face_encoding,
-    biden_face_encoding
+    first_face_encoding
 ]
 known_face_names = [
-    "Zakaria Kofiro",
-    "Vijay"
+    "Known"
 ]
 
 # Initialize some variables
@@ -76,6 +71,7 @@ while True:
     process_this_frame = not process_this_frame
 
 
+    found = False
     # Display the results
     for (top, right, bottom, left), name in zip(face_locations, face_names):
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
@@ -91,11 +87,14 @@ while True:
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-        print "found"
-     
+        print("found")
+        found = True
+
+    if found:
+        break
 
     # Display the resulting image
-    #cv2.imshow('Video', frame)
+    #cv2.imshow('Video', frame) <--- THIS SHOWS THE VIDEO WINDOW
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
