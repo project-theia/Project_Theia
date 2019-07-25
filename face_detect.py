@@ -1,12 +1,6 @@
 import face_recognition
 import cv2
 
-# This is a demo of blurring faces in video.
-
-# PLEASE NOTE: This example requires OpenCV (the `cv2` library) to be installed only to read from your webcam.
-# OpenCV is *not* required to use the face_recognition library. It's only required if you want to run this
-# specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
-
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
@@ -24,7 +18,8 @@ while True:
     face_locations = face_recognition.face_locations(small_frame, model="cnn")
 
     found = False
-    # Display the results
+
+    # Face Detect Loop
     for top, right, bottom, left in face_locations:
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
         top *= 4
@@ -36,7 +31,10 @@ while True:
         face_image = frame[top:bottom, left:right]
         frame[top:bottom, left:right] = face_image
 
+        #Face if found, set to true
         found = True
+
+    #Take a picture of found face 
     if found:
         img_name = "result.jpg"
         cv2.imwrite(img_name, frame)
